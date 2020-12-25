@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 function times(n) {
   const array = [];
@@ -8,22 +8,54 @@ function times(n) {
   return array;
 }
 
-function Cell({ blockSize, holdsFood, holdsSnake }) {
-  const color = holdsSnake
-    ? "rgb(50, 50, 50)"
-    : holdsFood
-    ? "rgb(120, 300, 30)"
-    : "transparent";
+function SnakePiece() {
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgb(50, 50, 50)"
+      }}
+    />
+  );
+}
 
+const RANDOM_FOOD_SAMPLES = ["🍒", "🍉", "🍌", "🍓", "🍊", "🍎"];
+
+function sample(array) {
+  const randomIndex = Math.floor(Math.random() * array.length);
+  return array[randomIndex];
+}
+
+function FoodPiece() {
+  const randomFoodEmoji = useMemo(() => sample(RANDOM_FOOD_SAMPLES), []);
+
+  return (
+    <span
+      role="img"
+      aria-label="Food"
+      style={{
+        lineHeight: "22px",
+        fontSize: "24px"
+      }}
+    >
+      {randomFoodEmoji}
+    </span>
+  );
+}
+
+function Cell({ blockSize, holdsFood, holdsSnake }) {
   return (
     <div
       style={{
         width: blockSize,
         height: blockSize,
-        border: "1px solid rgb(120, 120, 120)",
-        backgroundColor: color
+        border: "1px solid rgb(190, 190, 190)"
       }}
-    />
+    >
+      {holdsSnake ? <SnakePiece /> : null}
+      {holdsFood ? <FoodPiece /> : null}
+    </div>
   );
 }
 
