@@ -61,7 +61,7 @@ function GameInfo({ score, speed }) {
       <pre>
         <code>Score: {score}</code>
         <br />
-        <code>Speed: {speed}</code>
+        <code>Speed: {speed.toFixed(2)}</code>
       </pre>
     </div>
   );
@@ -191,7 +191,7 @@ const INITIAL_STATE = {
   lastSafeDirection: "RIGHT",
   ended: false,
   defeat: false,
-  speed: 3,
+  speed: 1,
   score: 0
 };
 
@@ -262,7 +262,8 @@ function gameReducer(state, action) {
           state.width,
           state.height
         ),
-        score: state.score + 1
+        score: state.score + 1,
+        speed: state.speed + 0.07
       };
     } else if (collision.withItself) {
       return {
@@ -342,7 +343,7 @@ export default function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    const intervalTime = 1 / (state.speed / 350);
+    const intervalTime = 1 / (state.speed / 250);
     const interval = setInterval(moveAutomatically, intervalTime);
 
     return () => clearInterval(interval);
